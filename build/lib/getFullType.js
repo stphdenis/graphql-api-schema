@@ -1,0 +1,30 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const getTypeRefs_1 = require("./getTypeRefs");
+const getInputValues_1 = require("./getInputValues");
+const getFields_1 = require("./getFields");
+const getEnumValues_1 = require("./getEnumValues");
+function getFullType(type) {
+    var _a;
+    const schema = {};
+    schema.kind = type.kind;
+    schema.name = type.name;
+    schema.description = (_a = type.description, (_a !== null && _a !== void 0 ? _a : undefined));
+    const fields = getFields_1.getFields(type.fields);
+    schema.fields = fields.fields;
+    schema.fieldList = fields.fieldList;
+    const inputFields = getInputValues_1.getInputValues(type.inputFields);
+    schema.inputFields = inputFields.inputValues;
+    schema.inputFieldList = inputFields.inputList;
+    const interfaces = getTypeRefs_1.getTypeRefs(type.interfaces);
+    schema.interfaces = interfaces.typeRefs;
+    schema.interfaceList = interfaces.typeRefList;
+    const enumValues = getEnumValues_1.getEnumValues(type.enumValues);
+    schema.enumValues = enumValues.enumValues;
+    schema.enumList = enumValues.enumList;
+    const possibleTypes = getTypeRefs_1.getTypeRefs(type.possibleTypes);
+    schema.possibleTypes = possibleTypes.typeRefs;
+    schema.possibleTypeList = possibleTypes.typeRefList;
+    return schema;
+}
+exports.getFullType = getFullType;

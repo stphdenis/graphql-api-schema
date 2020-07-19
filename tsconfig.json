@@ -1,0 +1,13 @@
+{ // /mnt/c/_/Dev/graphql-nexus/tut-world/world-api/node_modules/@prisma/cli/build/index.js
+  // downloadBinaries
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "lib": [
+      "esnext"
+    ],
+    "strict": true,
+    "rootDir": "src",
+    "outDir": "build"
+  }
+}
