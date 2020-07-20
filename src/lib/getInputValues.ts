@@ -1,5 +1,5 @@
-import { SchemaInputValues, SchemaInputValue } from "../GraphqlApiSchema"
-import { GraphQLInputValue } from "./GraphqlISchema"
+import { SchemaInputValues, SchemaInputValue } from "../ApiSchema"
+import { GraphQLInputValue } from "./ISchema"
 import { getTypeRef } from "./getTypeRef"
 
 export function getInputValues(types: GraphQLInputValue[]|null):

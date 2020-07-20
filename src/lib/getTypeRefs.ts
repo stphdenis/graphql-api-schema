@@ -1,5 +1,5 @@
-import { SchemaTypeRefs } from '../GraphqlApiSchema'
-import { GraphQLTypeRef } from './GraphqlISchema'
+import { SchemaTypeRefs } from '../ApiSchema'
+import { GraphQLTypeRef } from './ISchema'
 import { getTypeRef } from './getTypeRef'
 
 export function getTypeRefs(types: GraphQLTypeRef[]|null):

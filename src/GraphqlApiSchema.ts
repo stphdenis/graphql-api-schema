@@ -1,145 +1,106 @@
-import { GraphQLSchema, graphqlSync } from 'graphql'
-
-import { introspectionQuery } from './lib/GraphqlISchema'
-import { getFullTypes } from './lib/getFullTypes'
-import { getDirectives } from './lib/getDirectives'
-import { refTypesToRef } from './lib/objectToRef'
-
 import * as process from 'process'
 import * as path from 'path'
 import * as fs from 'fs'
 import * as cycle from 'cycle'
 
-export interface SchemaTypeRef {
-  isNullable: boolean
-  isList: boolean
-  of: SchemaFullType
-}
-export interface SchemaTypeRefs {
-  [key: string]: SchemaTypeRef
-}
+import { GraphQLSchema, graphqlSync } from 'graphql'
 
-export interface SchemaInputValue {
-  name: string
-  description?: string
-  type: SchemaTypeRef
-  defaultValue: any|null
-}
-export interface SchemaInputValues {
-  [key: string]: SchemaInputValue
-}
+import { IQuery } from './lib/ISchema'
+import { getFullTypes } from './lib/getFullTypes'
+import { getDirectives } from './lib/getDirectives'
+import { refTypesToRef } from './lib/objectToRef'
 
-export interface SchemaField {
-  name: string
-  description?: string
-  args?: SchemaInputValues
-  argList?: string[]
-  type: SchemaTypeRef
-  isDeprecated: boolean
-  deprecationReason?: string
-}
-export interface SchemaFields {
-  [key: string]: SchemaField
-}
+import { ApiSchema } from './ApiSchema'
 
-export interface SchemaEnumValue {
-  name: string
-  description?: string
-  isDeprecated: boolean
-  deprecationReason?: string
-}
-export interface SchemaEnumValues {
-  [key: string]: SchemaEnumValue
-}
+export interface GraphQLApiSchemaOptions {
+  /**
+   * 
+   */
+  graphQLSchema?: GraphQLSchema
 
-export interface SchemaFullType {
-  kind: 'OBJECT'|'SCALAR'|'ENUM'|'INPUT_OBJECT'|'INTERFACE'
-  name: string
-  description?: string
-  fields?: SchemaFields
-  fieldList?: string[]
-  inputFields?: SchemaInputValues
-  inputFieldList?: string[]
-  interfaces?: SchemaTypeRefs
-  interfaceList?: string[]
-  enumValues?: SchemaEnumValues
-  enumList?: string[]
-  possibleTypes?: SchemaTypeRefs
-  possibleTypeList?: string[]
-}
-export interface SchemaFullTypes {
-  [key: string]: SchemaFullType
-}
-
-export interface SchemaDirective {
-  name: string
-  description?: string
-  locations?: string[]
-  args?: SchemaInputValues
-  argList?: string[]
-}
-export interface SchemaDirectives {
-  [key: string]: SchemaDirective
-}
-
-export interface ApiSchema {
-  queryTypeName: string
-  mutationTypeName: string
-  subscriptionTypeName: string
-  types: SchemaFullTypes
-  directives?: SchemaDirectives
-  directiveList?: string[]
-}
-
-export interface GraphqlApiSchemaOptions {
-  dirName: string
-  fileName: string
+  /**
+   * Write a JSON file each time `apiSchema` is modified
+   * (`fileName` mandatory if informed)
+   */
+  dirName?: string
+  /**
+   * Write a JSON file each time `apiSchema` is modified
+   * (`dirName` mandatory if informed)
+   */
+  fileName?: string
+  /** `space` parameter of JSON.stringify */
   jsonSpace?: number
 }
 
-export class GraphqlApiSchema {
-  private static graphqlApiSchema: GraphqlApiSchema
-  private static get instance(): GraphqlApiSchema {
+export class GraphQLApiSchema {
+  private static graphqlApiSchema: GraphQLApiSchema
+
+  /**
+   * Instance of the static `apiSchema`
+   */
+  private static get instance(): GraphQLApiSchema {
     if(this.graphqlApiSchema === undefined) {
       throw new Error('apiSchema not defined')
     }
     return this.graphqlApiSchema
   }
-  static get apiSchema(): ApiSchema|undefined {
+
+  /**
+   * The `apiSchema` made from `graphQLSchema` or from a ***JSON file*** if allready there
+   */
+  static get apiSchema(): ApiSchema {
     return this.instance.apiSchema
   }
+
+  /**
+   * Replace the `graphQLSchema` with an other one
+   * to modify `apiSchema`
+   */
   static setGraphqlSchema(graphQLSchema: GraphQLSchema): void {
     this.instance.setGraphqlSchema(graphQLSchema)
   }
 
-  private _apiSchema?: ApiSchema
-  private _jsonApiSchema?: string
+  /**
+   * Creating with static init we have the possibility
+   * to use this class from anywhere via static calls
+   */
+  static init(options: GraphQLApiSchemaOptions): GraphQLApiSchema {
+    if(this.graphqlApiSchema === undefined) {
+      this.graphqlApiSchema = new GraphQLApiSchema(options)
+      return this.graphqlApiSchema
+    }
+    throw new Error('apiSchema allready defined')
+  }
+
+  private _apiSchema: ApiSchema
+  private _jsonApiSchema: string
   private _jsonSpace?: number
   private _fileName?: string
   private _filePath?: string
 
-  /**
-   * constructor
-   */
-  public constructor(options: GraphqlApiSchemaOptions) {
-    if(GraphqlApiSchema.graphqlApiSchema === undefined) {
-      GraphqlApiSchema.graphqlApiSchema = this
-    } else {
-      throw new Error('GraphqlApiSchema allready created')
-    }
-
+  public constructor(options: GraphQLApiSchemaOptions) {
     this._jsonSpace = options.jsonSpace
     if(options.dirName && options.fileName) {
       this._fileName = options.fileName
       this._filePath = path.join(process.cwd(), options.dirName, options.fileName)
+    } else if (options.dirName !== undefined || options.fileName !== undefined) {
+      throw new Error('Both "dirName" and "fileName have to be defined or not')
     }
+    this._apiSchema = {} as ApiSchema
+    this._jsonApiSchema = '{}'
 
     this.readFile()
+
+    if(options.graphQLSchema) {
+      this.setGraphqlSchema(options.graphQLSchema)
+    }
   }
 
+  /**
+   * Replace the `graphQLSchema` with an other one to modify `apiSchema`
+   */
   public setGraphqlSchema(graphQLSchema: GraphQLSchema) {
-    this._apiSchema = {} as ApiSchema
-    const iSchema = graphqlSync(graphQLSchema, introspectionQuery).data?.__schema
+    const iSchema = graphqlSync(graphQLSchema, IQuery).data?.__schema
 
     this._apiSchema.queryTypeName = iSchema.queryType?.name ?? 'Query'
     this._apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
@@ -160,7 +121,10 @@ export class GraphqlApiSchema {
     }
   }
 
-  public get apiSchema(): ApiSchema|undefined {
+  /**
+   * The `apiSchema` made from `graphQLSchema`
+   */
+  public get apiSchema(): ApiSchema {
     return this._apiSchema
   }
 
@@ -177,7 +141,7 @@ export class GraphqlApiSchema {
 
   private writeFile() {
     if(this._filePath) {
-      if(this._jsonApiSchema === undefined) {
+      if(this._jsonApiSchema === '{}') {
         throw new Error('jsonApiSchema not defined');
       }
       fs.writeFileSync(
@@ -187,6 +151,9 @@ export class GraphqlApiSchema {
     }
   }
 
+  /**
+   * Eliminate recursion referencing the types
+   */
   private jsonReplacer(key: string, value: any) {
     if(key && key === 'of') {
       return { $ref: `$[\"types\"][\"${value.name}\"]` }

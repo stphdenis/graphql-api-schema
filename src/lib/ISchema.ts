@@ -1,4 +1,4 @@
-export const introspectionQuery = `
+export const IQuery = `
 query IntrospectionQuery {
   __schema {
     queryType { name }

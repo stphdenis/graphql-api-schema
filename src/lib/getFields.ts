@@ -1,5 +1,5 @@
-import { SchemaFields, SchemaField } from "../GraphqlApiSchema"
-import { GraphQLField } from "./GraphqlISchema"
+import { SchemaFields, SchemaField } from "../ApiSchema"
+import { GraphQLField } from "./ISchema"
 import { getTypeRef } from "./getTypeRef"
 import { getInputValues } from "./getInputValues"
 

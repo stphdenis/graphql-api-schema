@@ -2,7 +2,7 @@ import {
   SchemaTypeRef,
   SchemaFullTypes,
   ApiSchema
-} from "../GraphqlApiSchema"
+} from "../ApiSchema"
 
 let refsToRefer = new Array<{typeRef: SchemaTypeRef, name: string}>()
 export function resetTypesToRef() {

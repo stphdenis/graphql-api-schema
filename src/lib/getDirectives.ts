@@ -1,5 +1,5 @@
-import { SchemaDirectives, SchemaDirective } from "../GraphqlApiSchema"
-import { GraphQLDirective } from "./GraphqlISchema"
+import { SchemaDirectives, SchemaDirective } from "../ApiSchema"
+import { GraphQLDirective } from "./ISchema"
 import { getInputValues } from "./getInputValues"
 
 export function getDirectives(types: GraphQLDirective[]|null):

@@ -1,5 +1,5 @@
-import { SchemaFullTypes } from "../GraphqlApiSchema"
-import { GraphQLFullType } from "./GraphqlISchema"
+import { SchemaFullTypes } from "../ApiSchema"
+import { GraphQLFullType } from "./ISchema"
 import { getFullType } from "./getFullType"
 
 export function getFullTypes(types: GraphQLFullType[]): SchemaFullTypes {

@@ -1,5 +1,5 @@
-import { SchemaFullType } from "../GraphqlApiSchema"
-import { GraphQLFullType } from "./GraphqlISchema"
+import { SchemaFullType } from "../ApiSchema"
+import { GraphQLFullType } from "./ISchema"
 import { getTypeRefs } from "./getTypeRefs"
 import { getInputValues } from "./getInputValues"
 import { getFields } from "./getFields"
