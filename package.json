@@ -1,16 +1,23 @@
 {
   "name": "graphql-api-schema",
+  "version": "0.1.0",
   "description": "Simpler schema object from GraphQLSchema",
   "license": "MIT",
-  "version": "0.1.0",
   "author": {
     "name": "DENIS Stéphane",
     "email": "stph.denis@gmail.com"
   },
-  "repository": "http://github.com/stphdenis/graphql-api-schema",
-  "bugs": "http://github.com/stphdenis/graphql-api-schema/issues",
-  "main": "build",
-  "types": "build",
+  "main": "build/index",
+  "types": "build/index.d.ts",
+  "sideEffects": false,
+  "homepage": "http://github.com/stphdenis/graphql-api-schema",
+  "bugs": {
+    "url": "http://github.com/stphdenis/graphql-api-schema/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/stphdenis/graphql-api-schema.git"
+  },
   "dependencies": {
     "cycle": "^1.0.3"
   },
