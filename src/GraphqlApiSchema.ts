@@ -20,7 +20,7 @@ export interface GraphQLApiSchemaOptions {
   /**
    * Hydrate `apiSchema` as initialisation.
    */
-  graphQLSchema?: GraphQLSchema
+  graphqlSchema?: GraphQLSchema
 
   /**
    * Based on project root.
@@ -64,8 +64,8 @@ export class GraphQLApiSchema {
    * Replace the `graphQLSchema` with an other one
    * to modify `apiSchema`
    */
-  static setGraphqlSchema(graphQLSchema: GraphQLSchema): void {
-    this.instance.setGraphqlSchema(graphQLSchema)
+  static setGraphQLSchema(graphqlSchema: GraphQLSchema): void {
+    this.instance.setGraphQLSchema(graphqlSchema)
   }
 
   /**
@@ -99,16 +99,16 @@ export class GraphQLApiSchema {
 
     this.readFile()
 
-    if(options.graphQLSchema) {
-      this.setGraphqlSchema(options.graphQLSchema)
+    if(options.graphqlSchema) {
+      this.setGraphQLSchema(options.graphqlSchema)
     }
   }
 
   /**
    * Replace the `graphQLSchema` with an other one to modify `apiSchema`
    */
-  public setGraphqlSchema(graphQLSchema: GraphQLSchema) {
-    const iSchemaResult = graphqlSync(graphQLSchema, IQuery)
+  public setGraphQLSchema(graphqlSchema: GraphQLSchema) {
+    const iSchemaResult = graphqlSync(graphqlSchema, IQuery)
     const iSchemaData = iSchemaResult.data
     if (iSchemaResult.errors) {
       throw new Error(iSchemaResult.errors.toString());
