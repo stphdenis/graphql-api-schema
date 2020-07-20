@@ -1,4 +1,4 @@
-export { ApiSchema } from './GraphqlApiSchema';
-export { GraphqlApiSchema } from './GraphqlApiSchema';
-export { GraphqlApiSchemaOptions } from './GraphqlApiSchema';
+export { ApiSchema } from './ApiSchema';
+export { GraphQLApiSchema as GraphqlApiSchema } from './GraphQLApiSchema';
+export { GraphQLApiSchemaOptions as GraphqlApiSchemaOptions } from './GraphQLApiSchema';
 //# sourceMappingURL=index.d.ts.map

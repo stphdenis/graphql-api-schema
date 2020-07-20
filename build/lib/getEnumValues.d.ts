@@ -1,5 +1,5 @@
-import { SchemaEnumValues } from "../GraphqlApiSchema";
-import { GraphQLEnumValue } from "./GraphqlISchema";
+import { SchemaEnumValues } from "../ApiSchema";
+import { GraphQLEnumValue } from "./ISchema";
 export declare function getEnumValues(types: GraphQLEnumValue[] | null): {
     enumValues?: SchemaEnumValues;
     enumList?: string[];
