@@ -2,7 +2,7 @@
   "name": "graphql-api-schema",
   "description": "Simpler schema object from GraphQLSchema",
   "license": "MIT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": {
     "name": "DENIS Stéphane",
     "email": "stph.denis@gmail.com"
