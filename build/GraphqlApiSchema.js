@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const cycle = require("cycle");
 const graphql_1 = require("graphql");
-const ISchema_1 = require("./lib/ISchema");
+const IQuery_1 = require("./lib/IQuery");
 const getFullTypes_1 = require("./lib/getFullTypes");
 const getDirectives_1 = require("./lib/getDirectives");
 const objectToRef_1 = require("./lib/objectToRef");
@@ -64,15 +64,25 @@ class GraphQLApiSchema {
      * Replace the `graphQLSchema` with an other one to modify `apiSchema`
      */
     setGraphqlSchema(graphQLSchema) {
-        var _a, _b, _c, _d, _e, _f, _g;
-        const iSchema = (_a = graphql_1.graphqlSync(graphQLSchema, ISchema_1.IQuery).data) === null || _a === void 0 ? void 0 : _a.__schema;
-        this._apiSchema.queryTypeName = (_c = (_b = iSchema.queryType) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : 'Query';
-        this._apiSchema.mutationTypeName = (_e = (_d = iSchema.mutationType) === null || _d === void 0 ? void 0 : _d.name) !== null && _e !== void 0 ? _e : 'Mutation';
-        this._apiSchema.subscriptionTypeName = (_g = (_f = iSchema.subscriptionType) === null || _f === void 0 ? void 0 : _f.name) !== null && _g !== void 0 ? _g : 'Subscription';
-        this._apiSchema.types = getFullTypes_1.getFullTypes(iSchema.types);
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        const iSchemaResult = graphql_1.graphqlSync(graphQLSchema, IQuery_1.IQuery);
+        const iSchemaData = iSchemaResult.data;
+        if (iSchemaResult.errors) {
+            throw new Error(iSchemaResult.errors.toString());
+        }
+        if (iSchemaData === undefined || iSchemaData === null) {
+            throw new Error('iSchemaData not defined');
+        }
+        const iSchema = iSchemaData.__schema;
+        this._apiSchema.queryTypeName = (_b = (_a = iSchema.queryType) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : 'Query';
+        this._apiSchema.mutationTypeName = (_d = (_c = iSchema.mutationType) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : 'Mutation';
+        this._apiSchema.subscriptionTypeName = (_f = (_e = iSchema.subscriptionType) === null || _e === void 0 ? void 0 : _e.name) !== null && _f !== void 0 ? _f : 'Subscription';
+        const types = getFullTypes_1.getFullTypes(iSchema.types);
+        this._apiSchema.types = types.types;
+        this._apiSchema.typeList = types.typeList;
         const directives = getDirectives_1.getDirectives(iSchema.directives);
-        this._apiSchema.directives = directives.directives;
-        this._apiSchema.directiveList = directives.directiveList;
+        this._apiSchema.directives = (_g = directives.directives) !== null && _g !== void 0 ? _g : {};
+        this._apiSchema.directiveList = (_h = directives.directiveList) !== null && _h !== void 0 ? _h : [];
         objectToRef_1.refTypesToRef(this._apiSchema);
         const jsonApiSchema = JSON.stringify(this._apiSchema, this.jsonReplacer, this._jsonSpace);
         if (jsonApiSchema !== this._jsonApiSchema) {

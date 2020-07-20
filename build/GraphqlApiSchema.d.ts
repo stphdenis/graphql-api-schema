@@ -1,21 +1,28 @@
 import { GraphQLSchema } from 'graphql';
 import { ApiSchema } from './ApiSchema';
+/**
+ * Options for GraphQLApiSchema constructor's class.
+ */
 export interface GraphQLApiSchemaOptions {
     /**
-     *
+     * Hydrate `apiSchema` as initialisation.
      */
     graphQLSchema?: GraphQLSchema;
     /**
-     * Write a JSON file each time `apiSchema` is modified
-     * (`fileName` mandatory if informed)
+     * Based on project root.
+     *
+     * Mandatory if `fileName` is defined.
      */
     dirName?: string;
     /**
-     * Write a JSON file each time `apiSchema` is modified
-     * (`dirName` mandatory if informed)
+     * Write a JSON file each time `apiSchema` is modified.
+     *
+     * Hydrate `apiSchema` at initialisation if `graphQLSchema` is undefined.
+     *
+     * Mandatory if `dirName` is defined.
      */
     fileName?: string;
-    /** `space` parameter of JSON.stringify */
+    /** `JSON.stringify` `space` parameter. */
     jsonSpace?: number;
 }
 export declare class GraphQLApiSchema {

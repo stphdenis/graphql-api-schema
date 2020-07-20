@@ -10,8 +10,6 @@ function getTypeRefs(types) {
             const ref = getTypeRef_1.getTypeRef(type);
             schemaList.push(ref.name);
             schemas[ref.name] = ref.schema;
-            //schemaList.push(schema.of.name)
-            //schemas[schema.of.name] = schema
         }
         return {
             typeRefs: schemas,

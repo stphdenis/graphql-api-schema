@@ -13,8 +13,6 @@ export function getTypeRefs(types: GraphQLTypeRef[]|null):
       const ref = getTypeRef(type)
       schemaList.push(ref.name)
       schemas[ref.name] = ref.schema
-      //schemaList.push(schema.of.name)
-      //schemas[schema.of.name] = schema
     }
     return {
       typeRefs: schemas,

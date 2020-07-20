@@ -17,11 +17,11 @@ export function getDirectives(types: GraphQLDirective[]|null):
 
       schema.name = type.name
       schema.description = type.description ?? undefined
-      schema.locations = type.locations ?? undefined
+      schema.locations = type.locations ?? []
 
       const args = getInputValues(type.args)
-      schema.args = args.inputValues
-      schema.argList = args.inputList
+      schema.args = args.inputValues ?? {}
+      schema.argList = args.inputList ?? []
     }
     return {
       directives: schemas,

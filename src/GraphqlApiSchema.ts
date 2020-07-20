@@ -5,30 +5,38 @@ import * as cycle from 'cycle'
 
 import { GraphQLSchema, graphqlSync } from 'graphql'
 
-import { IQuery } from './lib/ISchema'
+import { IQuery } from './lib/IQuery'
+import { ISchema } from './lib/ISchema'
 import { getFullTypes } from './lib/getFullTypes'
 import { getDirectives } from './lib/getDirectives'
 import { refTypesToRef } from './lib/objectToRef'
 
 import { ApiSchema } from './ApiSchema'
 
+/**
+ * Options for GraphQLApiSchema constructor's class.
+ */
 export interface GraphQLApiSchemaOptions {
   /**
-   * 
+   * Hydrate `apiSchema` as initialisation.
    */
   graphQLSchema?: GraphQLSchema
 
   /**
-   * Write a JSON file each time `apiSchema` is modified
-   * (`fileName` mandatory if informed)
+   * Based on project root.
+   * 
+   * Mandatory if `fileName` is defined.
    */
   dirName?: string
   /**
-   * Write a JSON file each time `apiSchema` is modified
-   * (`dirName` mandatory if informed)
+   * Write a JSON file each time `apiSchema` is modified.
+   * 
+   * Hydrate `apiSchema` at initialisation if `graphQLSchema` is undefined.
+   * 
+   * Mandatory if `dirName` is defined.
    */
   fileName?: string
-  /** `space` parameter of JSON.stringify */
+  /** `JSON.stringify` `space` parameter. */
   jsonSpace?: number
 }
 
@@ -100,17 +108,27 @@ export class GraphQLApiSchema {
    * Replace the `graphQLSchema` with an other one to modify `apiSchema`
    */
   public setGraphqlSchema(graphQLSchema: GraphQLSchema) {
-    const iSchema = graphqlSync(graphQLSchema, IQuery).data?.__schema
+    const iSchemaResult = graphqlSync(graphQLSchema, IQuery)
+    const iSchemaData = iSchemaResult.data
+    if (iSchemaResult.errors) {
+      throw new Error(iSchemaResult.errors.toString());
+    }
+    if (iSchemaData === undefined || iSchemaData === null) {
+      throw new Error('iSchemaData not defined')
+    }
+    const iSchema: ISchema = iSchemaData.__schema
 
     this._apiSchema.queryTypeName = iSchema.queryType?.name ?? 'Query'
     this._apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
     this._apiSchema.subscriptionTypeName = iSchema.subscriptionType?.name ?? 'Subscription'
 
-    this._apiSchema.types = getFullTypes(iSchema.types)
+    const types = getFullTypes(iSchema.types)
+    this._apiSchema.types = types.types
+    this._apiSchema.typeList = types.typeList
 
     const directives = getDirectives(iSchema.directives)
-    this._apiSchema.directives = directives.directives
-    this._apiSchema.directiveList = directives.directiveList
+    this._apiSchema.directives = directives.directives ?? {}
+    this._apiSchema.directiveList = directives.directiveList ?? []
 
     refTypesToRef(this._apiSchema)
 

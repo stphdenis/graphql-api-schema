@@ -23,8 +23,8 @@ export function getFields(types: GraphQLField[]|null):
       schema.type = getTypeRef(type.type).schema
 
       const args = getInputValues(type.args)
-      schema.args = args.inputValues
-      schema.argList = args.inputList
+      schema.args = args.inputValues ?? {}
+      schema.argList = args.inputList ?? []
     }
     return {
       fields: schemas,

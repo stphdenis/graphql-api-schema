@@ -1,6 +1,10 @@
 # graphql-api-schema
 
-Generates objects from GraphQLSchema to give simple way to navigate into with `typescript`.
+Generates a simple schema from GraphQLSchema to give simple way to navigate into with `typescript`.
+
+Can generate and update a JSON file each time `apiSchema` is modified by a new `graphQLSchema`.
+
+The JSON file hydrate `apiSchema` at initialisation when `graphQLSchema` is not given.
 
 ## Examples
 
@@ -10,11 +14,11 @@ import { apiSchema } from 'graphql-api-schema'
 // List of directives
 apiSchema.directiveList // => [ 'include', 'skip', 'deprecated' ]
 
-// args of directive skip
-apiSchema.directives?.['skip'].argList // => [ 'if' ]
+// Args of directive 'skip'
+apiSchema.directives['skip'].argList // => [ 'if' ]
 ```
 
-`apiSchema.directives?.['skip'].args?.['if']` gives :
+`apiSchema.directives['skip'].args['if']` gives :
 
 ```js
  {
@@ -33,10 +37,18 @@ apiSchema.directives?.['skip'].argList // => [ 'if' ]
 }
 ```
 
-## Init
+## Initialisation
 
 ```ts
-import { GraphqlApiSchema } from 'graphql-api-schema'
-new GraphqlApiSchema()
+import { GraphQLApiSchema } from 'graphql-api-schema'
+GraphQLApiSchema.init({
+  // From root of project
+  dirName: 'src'
+  // File not modified if not different
+  fileName: 'apiSchema.json'
+  // Same parameter as for JSON.stringify
+  jsonSpaces: 2
+})
 ```
 
+File generation is optional.

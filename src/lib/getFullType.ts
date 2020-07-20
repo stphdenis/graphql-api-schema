@@ -13,24 +13,24 @@ export function getFullType(type: GraphQLFullType): SchemaFullType {
   schema.description = type.description ?? undefined
 
   const fields = getFields(type.fields)
-  schema.fields = fields.fields
-  schema.fieldList = fields.fieldList
+  schema.fields = fields.fields ?? {}
+  schema.fieldList = fields.fieldList ?? []
 
   const inputFields = getInputValues(type.inputFields)
-  schema.inputFields = inputFields.inputValues
-  schema.inputFieldList = inputFields.inputList
+  schema.inputFields = inputFields.inputValues ?? {}
+  schema.inputFieldList = inputFields.inputList ?? []
 
   const interfaces = getTypeRefs(type.interfaces)
-  schema.interfaces = interfaces.typeRefs
-  schema.interfaceList = interfaces.typeRefList
+  schema.interfaces = interfaces.typeRefs ?? {}
+  schema.interfaceList = interfaces.typeRefList ?? []
 
   const enumValues = getEnumValues(type.enumValues)
-  schema.enumValues = enumValues.enumValues
-  schema.enumList = enumValues.enumList
+  schema.enumValues = enumValues.enumValues ?? {}
+  schema.enumList = enumValues.enumList ?? []
 
   const possibleTypes = getTypeRefs(type.possibleTypes)
-  schema.possibleTypes = possibleTypes.typeRefs
-  schema.possibleTypeList = possibleTypes.typeRefList
+  schema.possibleTypes = possibleTypes.typeRefs ?? {}
+  schema.possibleTypeList = possibleTypes.typeRefList ?? []
 
   return schema
 }
