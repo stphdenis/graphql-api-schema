@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getInputValues = void 0;
 const getTypeRef_1 = require("./getTypeRef");
 function getInputValues(types) {
     var _a;
@@ -11,7 +12,7 @@ function getInputValues(types) {
             const schema = {};
             schemas[type.name] = schema;
             schema.name = type.name;
-            schema.description = (_a = type.description, (_a !== null && _a !== void 0 ? _a : undefined));
+            schema.description = (_a = type.description) !== null && _a !== void 0 ? _a : undefined;
             schema.type = getTypeRef_1.getTypeRef(type.type).schema;
             schema.defaultValue = type.defaultValue;
         }

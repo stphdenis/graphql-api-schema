@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getDirectives = void 0;
 const getInputValues_1 = require("./getInputValues");
 function getDirectives(types) {
     var _a, _b;
@@ -11,8 +12,8 @@ function getDirectives(types) {
             const schema = {};
             schemas[type.name] = schema;
             schema.name = type.name;
-            schema.description = (_a = type.description, (_a !== null && _a !== void 0 ? _a : undefined));
-            schema.locations = (_b = type.locations, (_b !== null && _b !== void 0 ? _b : undefined));
+            schema.description = (_a = type.description) !== null && _a !== void 0 ? _a : undefined;
+            schema.locations = (_b = type.locations) !== null && _b !== void 0 ? _b : undefined;
             const args = getInputValues_1.getInputValues(type.args);
             schema.args = args.inputValues;
             schema.argList = args.inputList;

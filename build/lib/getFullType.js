@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFullType = void 0;
 const getTypeRefs_1 = require("./getTypeRefs");
 const getInputValues_1 = require("./getInputValues");
 const getFields_1 = require("./getFields");
@@ -9,7 +10,7 @@ function getFullType(type) {
     const schema = {};
     schema.kind = type.kind;
     schema.name = type.name;
-    schema.description = (_a = type.description, (_a !== null && _a !== void 0 ? _a : undefined));
+    schema.description = (_a = type.description) !== null && _a !== void 0 ? _a : undefined;
     const fields = getFields_1.getFields(type.fields);
     schema.fields = fields.fields;
     schema.fieldList = fields.fieldList;

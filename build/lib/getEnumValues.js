@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getEnumValues = void 0;
 function getEnumValues(types) {
     var _a, _b, _c;
     if (types && types.length > 0) {
@@ -10,9 +11,9 @@ function getEnumValues(types) {
             const schema = {};
             schemas[type.name] = schema;
             schema.name = type.name;
-            schema.description = (_a = type.description, (_a !== null && _a !== void 0 ? _a : undefined));
-            schema.isDeprecated = (_b = type.isDeprecated, (_b !== null && _b !== void 0 ? _b : false));
-            schema.deprecationReason = (_c = type.deprecationReason, (_c !== null && _c !== void 0 ? _c : undefined));
+            schema.description = (_a = type.description) !== null && _a !== void 0 ? _a : undefined;
+            schema.isDeprecated = (_b = type.isDeprecated) !== null && _b !== void 0 ? _b : false;
+            schema.deprecationReason = (_c = type.deprecationReason) !== null && _c !== void 0 ? _c : undefined;
         }
         return { enumValues: schemas, enumList: schemaList };
     }

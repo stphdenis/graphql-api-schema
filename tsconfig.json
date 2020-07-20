@@ -6,6 +6,8 @@
     "lib": [
       "esnext"
     ],
+    "declaration": true,
+    "declarationMap": true,
     "strict": true,
     "rootDir": "src",
     "outDir": "build"

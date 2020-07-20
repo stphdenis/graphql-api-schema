@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GraphqlApiSchema = void 0;
 const graphql_1 = require("graphql");
 const GraphqlISchema_1 = require("./lib/GraphqlISchema");
 const getFullTypes_1 = require("./lib/getFullTypes");
@@ -43,9 +44,9 @@ class GraphqlApiSchema {
         var _a, _b, _c, _d, _e, _f, _g;
         this._apiSchema = {};
         const iSchema = (_a = graphql_1.graphqlSync(graphQLSchema, GraphqlISchema_1.introspectionQuery).data) === null || _a === void 0 ? void 0 : _a.__schema;
-        this._apiSchema.queryTypeName = (_c = (_b = iSchema.queryType) === null || _b === void 0 ? void 0 : _b.name, (_c !== null && _c !== void 0 ? _c : 'Query'));
-        this._apiSchema.mutationTypeName = (_e = (_d = iSchema.mutationType) === null || _d === void 0 ? void 0 : _d.name, (_e !== null && _e !== void 0 ? _e : 'Mutation'));
-        this._apiSchema.subscriptionTypeName = (_g = (_f = iSchema.subscriptionType) === null || _f === void 0 ? void 0 : _f.name, (_g !== null && _g !== void 0 ? _g : 'Subscription'));
+        this._apiSchema.queryTypeName = (_c = (_b = iSchema.queryType) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : 'Query';
+        this._apiSchema.mutationTypeName = (_e = (_d = iSchema.mutationType) === null || _d === void 0 ? void 0 : _d.name) !== null && _e !== void 0 ? _e : 'Mutation';
+        this._apiSchema.subscriptionTypeName = (_g = (_f = iSchema.subscriptionType) === null || _f === void 0 ? void 0 : _f.name) !== null && _g !== void 0 ? _g : 'Subscription';
         this._apiSchema.types = getFullTypes_1.getFullTypes(iSchema.types);
         const directives = getDirectives_1.getDirectives(iSchema.directives);
         this._apiSchema.directives = directives.directives;

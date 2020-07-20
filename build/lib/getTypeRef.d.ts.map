@@ -1,0 +1,1 @@
+{"version":3,"file":"getTypeRef.d.ts","sourceRoot":"","sources":["../../src/lib/getTypeRef.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,qBAAqB,CAAA;AACnD,OAAO,EAAE,cAAc,EAAE,MAAM,kBAAkB,CAAA;AAGjD,wBAAgB,UAAU,CAAC,IAAI,EAAE,cAAc,GAAG;IAAC,MAAM,EAAE,aAAa,CAAC;IAAC,IAAI,EAAE,MAAM,CAAA;CAAC,CA8BtF"}

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTypeRef = void 0;
 const objectToRef_1 = require("./objectToRef");
 function getTypeRef(type) {
     const schema = {

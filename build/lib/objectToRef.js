@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.refTypesToRef = exports.addTypeToRef = exports.resetTypesToRef = void 0;
 let refsToRefer = new Array();
 function resetTypesToRef() {
     refsToRefer = [];

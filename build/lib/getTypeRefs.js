@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTypeRefs = void 0;
 const getTypeRef_1 = require("./getTypeRef");
 function getTypeRefs(types) {
     if (types && types.length > 0) {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.introspectionQuery = void 0;
 exports.introspectionQuery = `
 query IntrospectionQuery {
   __schema {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFullTypes = void 0;
 const getFullType_1 = require("./getFullType");
 function getFullTypes(types) {
     const schemas = {};

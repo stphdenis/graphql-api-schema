@@ -1,0 +1,1 @@
+{"version":3,"file":"getFields.d.ts","sourceRoot":"","sources":["../../src/lib/getFields.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAe,MAAM,qBAAqB,CAAA;AAC/D,OAAO,EAAE,YAAY,EAAE,MAAM,kBAAkB,CAAA;AAI/C,wBAAgB,SAAS,CAAC,KAAK,EAAE,YAAY,EAAE,GAAC,IAAI,GACpD;IAAE,MAAM,CAAC,EAAE,YAAY,CAAA;IACrB,SAAS,CAAC,EAAE,MAAM,EAAE,CAAA;CACrB,CA6BA"}
