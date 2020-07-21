@@ -4,6 +4,7 @@
   "description": "Simpler schema object from GraphQLSchema",
   "keywords": [
     "GraphQL",
+    "Types",
     "Typecript",
     "GraphQLSchema"
   ],
