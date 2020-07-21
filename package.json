@@ -42,5 +42,8 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
