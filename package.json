@@ -1,6 +1,6 @@
 {
   "name": "graphql-api-schema",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Simpler schema object from GraphQLSchema",
   "keywords": [
     "GraphQL",
@@ -12,8 +12,8 @@
     "name": "DENIS Stéphane",
     "email": "stph.denis@gmail.com"
   },
-  "main": "build/index",
-  "types": "build/index.d.ts",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "homepage": "http://github.com/stphdenis/graphql-api-schema",
   "bugs": {
