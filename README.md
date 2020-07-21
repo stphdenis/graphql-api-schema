@@ -1,10 +1,10 @@
 # graphql-api-schema
 
-Generates a simple schema from GraphQLSchema to give simple way to navigate into with `typescript`.
+Generates a simple `ApiSchema` from `GraphQLSchema` to give simple way to navigate into with `typescript`.
 
 Can generate and update a JSON file each time `apiSchema` is modified by a new `graphQLSchema`.
 
-The JSON file hydrate `apiSchema` at initialisation when `graphQLSchema` is not given.
+The JSON file hydrate `apiSchema` at initialisation time when `graphQLSchema` is not given.
 
 ## Examples
 
