@@ -1,6 +1,6 @@
 {
   "name": "graphql-api-schema",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Simpler schema object from GraphQLSchema",
   "keywords": [
     "GraphQL",
@@ -40,7 +40,8 @@
     "typescript": ">=3.8.0"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "yarn tsc",
+    "npm": "yarn build && yarn publish"
   },
   "prettier": {
     "semi": false,
