@@ -21,7 +21,6 @@ export interface GraphQLApiSchemaOptions {
    * Hydrate `apiSchema` as initialisation.
    */
   graphqlSchema?: GraphQLSchema
-
   /**
    * Based on project root.
    * 
@@ -31,18 +30,22 @@ export interface GraphQLApiSchemaOptions {
   /**
    * Write a JSON file each time `apiSchema` is modified.
    * 
-   * Hydrate `apiSchema` at initialisation if `graphQLSchema` is undefined.
+   * Hydrate `apiSchema` at initialisation time if `graphQLSchema` is undefined.
    * 
    * Mandatory if `dirName` is defined.
    */
   fileName?: string
-  /** `JSON.stringify` `space` parameter. */
+  /** `space` parameter of `JSON.stringify`. */
   jsonSpace?: number
 }
 
-export const apiSchema = (() => GraphQLApiSchema.apiSchema)()
+interface PrivateOptions extends GraphQLApiSchemaOptions {
+  isStatic: boolean
+}
 
 export class GraphQLApiSchema {
+  private static _apiSchema: ApiSchema = {} as ApiSchema
+
   private static graphqlApiSchema: GraphQLApiSchema
 
   /**
@@ -59,7 +62,7 @@ export class GraphQLApiSchema {
    * The `apiSchema` made from `graphQLSchema` or from a ***JSON file*** if allready there
    */
   static get apiSchema(): ApiSchema {
-    return this.instance.apiSchema
+    return this._apiSchema
   }
 
   /**
@@ -76,13 +79,14 @@ export class GraphQLApiSchema {
    */
   static init(options: GraphQLApiSchemaOptions): GraphQLApiSchema {
     if(this.graphqlApiSchema === undefined) {
+      (options as PrivateOptions).isStatic = true
       this.graphqlApiSchema = new GraphQLApiSchema(options)
       return this.graphqlApiSchema
     }
     throw new Error('apiSchema allready defined')
   }
 
-  private _apiSchema: ApiSchema
+  private _apiSchema?: ApiSchema
   private _jsonApiSchema: string
   private _jsonSpace?: number
   private _fileName?: string
@@ -96,7 +100,9 @@ export class GraphQLApiSchema {
     } else if (options.dirName !== undefined || options.fileName !== undefined) {
       throw new Error('Both "dirName" and "fileName have to be defined or not')
     }
-    this._apiSchema = {} as ApiSchema
+    if((options as PrivateOptions).isStatic === false) {
+      this._apiSchema = {} as ApiSchema
+    }
     this._jsonApiSchema = '{}'
 
     this.readFile()
@@ -120,21 +126,23 @@ export class GraphQLApiSchema {
     }
     const iSchema: ISchema = iSchemaData.__schema
 
-    this._apiSchema.queryTypeName = iSchema.queryType?.name ?? 'Query'
-    this._apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
-    this._apiSchema.subscriptionTypeName = iSchema.subscriptionType?.name ?? 'Subscription'
+    const apiSchema = this._apiSchema ?? GraphQLApiSchema._apiSchema
+
+    apiSchema.queryTypeName = iSchema.queryType?.name ?? 'Query'
+    apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
+    apiSchema.subscriptionTypeName = iSchema.subscriptionType?.name ?? 'Subscription'
 
     const types = getFullTypes(iSchema.types)
-    this._apiSchema.types = types.types
-    this._apiSchema.typeList = types.typeList
+    apiSchema.types = types.types
+    apiSchema.typeList = types.typeList
 
     const directives = getDirectives(iSchema.directives)
-    this._apiSchema.directives = directives.directives ?? {}
-    this._apiSchema.directiveList = directives.directiveList ?? []
+    apiSchema.directives = directives.directives ?? {}
+    apiSchema.directiveList = directives.directiveList ?? []
 
-    refTypesToRef(this._apiSchema)
+    refTypesToRef(apiSchema)
 
-    const jsonApiSchema = JSON.stringify(this._apiSchema, this.jsonReplacer, this._jsonSpace)
+    const jsonApiSchema = JSON.stringify(apiSchema, this.jsonReplacer, this._jsonSpace)
     if(jsonApiSchema !== this._jsonApiSchema) {
       this._jsonApiSchema = jsonApiSchema
       this.writeFile()
@@ -145,14 +153,19 @@ export class GraphQLApiSchema {
    * The `apiSchema` made from `graphQLSchema`
    */
   public get apiSchema(): ApiSchema {
-    return this._apiSchema
+    return this._apiSchema ?? GraphQLApiSchema._apiSchema
   }
 
   private readFile() {
     if(this._filePath) {
       try {
         this._jsonApiSchema = fs.readFileSync(this._filePath).toLocaleString()
-        this._apiSchema = cycle.retrocycle(JSON.parse(this._jsonApiSchema))
+        const apiSchema = cycle.retrocycle(JSON.parse(this._jsonApiSchema))
+        if(this._apiSchema) {
+          Object.assign(this._apiSchema, apiSchema)
+        } else {
+          Object.assign(GraphQLApiSchema._apiSchema, apiSchema)
+        }
       } catch {
         console.info(`file ${this._fileName} not already defined`)
       }
@@ -181,3 +194,4 @@ export class GraphQLApiSchema {
     return value
   }
 }
+export const apiSchema = GraphQLApiSchema.apiSchema

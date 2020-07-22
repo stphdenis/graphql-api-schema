@@ -8,12 +8,10 @@ The JSON file hydrate `apiSchema` at initialisation time when `graphQLSchema` is
 
 ## Examples
 
-Wioth the static form :
+With the static form :
 
 ```ts
-import { GraphQLApiSchema } from 'graphql-api-schema'
-
-const apiSchema = GraphQLApiSchema.apiSchema
+import { apiSchema } from 'graphql-api-schema'
 
 // List of directives
 apiSchema.directiveList // => [ 'include', 'skip', 'deprecated' ]
@@ -61,7 +59,10 @@ For the object version, `apiSchema` can't be accessed staticaly but work's the s
 
 ```ts
 import { GraphQLApiSchema } from 'graphql-api-schema'
-const graphQLApiSchema = new GraphQLApiSchema({...})
+const graphQLApiSchema = new GraphQLApiSchema({
+  dirName: 'src'
+  fileName: 'apiSchema.json'
+})
 
 const apiSchema = graphQLApiSchema.apiSchema
 ```
