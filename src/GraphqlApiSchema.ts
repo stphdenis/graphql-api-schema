@@ -40,6 +40,8 @@ export interface GraphQLApiSchemaOptions {
   jsonSpace?: number
 }
 
+export const apiSchema = (() => GraphQLApiSchema.apiSchema)()
+
 export class GraphQLApiSchema {
   private static graphqlApiSchema: GraphQLApiSchema
 

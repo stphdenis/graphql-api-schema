@@ -1,3 +1,6 @@
 export { ApiSchema } from './ApiSchema'
-export { GraphQLApiSchema } from './GraphQLApiSchema'
-export { GraphQLApiSchemaOptions } from './GraphQLApiSchema'
+export {
+    GraphQLApiSchemaOptions,
+    GraphQLApiSchema,
+    apiSchema,
+} from './GraphQLApiSchema'
