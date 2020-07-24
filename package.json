@@ -1,6 +1,6 @@
 {
   "name": "graphql-api-schema",
-  "version": "0.2.16",
+  "version": "0.3.0",
   "description": "Simpler schema object from GraphQLSchema",
   "keywords": [
     "GraphQL",
@@ -33,7 +33,7 @@
     "typescript": "^3.9.7"
   },
   "peerDependencies": {
-    "cycle" :"^1.0.3",
+    "cycle": "^1.0.3",
     "graphql": ">=14.0.0"
   },
   "scripts": {
