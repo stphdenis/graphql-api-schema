@@ -194,7 +194,7 @@ export class GraphQLApiSchema {
       return { $ref: `$[\"types\"][\"${value.name}\"]` }
     }
     if (value instanceof Map) {
-      return { $map: [...value] }
+      return [...value]
     }
     return value
   }
@@ -203,9 +203,9 @@ export class GraphQLApiSchema {
    * Retreave Map
    */
   private reviver(key: string, value: any) {
-    if(key === '$map') {
-      console.info(`value['$map'] :`, value['$map'])
-      return new Map(value['$map'])
+    if(key.endsWith('Map')) {
+      //console.info(`value['$map'] :`, value['$map'])
+      return new Map(value)
     }
     return value
   }
