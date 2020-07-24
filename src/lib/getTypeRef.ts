@@ -1,8 +1,11 @@
 import { SchemaTypeRef } from "../ApiSchema"
 import { GraphQLTypeRef } from "./ISchema"
-import { addTypeToRef } from "./objectToRef"
+import { addTypeToRef } from "./TypesToRef"
 
-export function getTypeRef(type: GraphQLTypeRef): {schema: SchemaTypeRef, name: string} {
+export function getTypeRef(type: GraphQLTypeRef):
+{ schema: SchemaTypeRef,
+  name: string,
+} {
   const schema = {
     isList: false,
     isNullable: true,
@@ -26,10 +29,13 @@ export function getTypeRef(type: GraphQLTypeRef): {schema: SchemaTypeRef, name: 
         //schema.of = { name: currentType.name }
         addTypeToRef(schema, currentType.name)
         if(currentType.ofType === null) {
-          return { schema, name: currentType.name }
+          return {
+            schema,
+            name: currentType.name,
+          }
         }
     }
     currentType = currentType.ofType
   }
-  throw new Error('Could never comme here')
+  throw new Error('Should never comme here')
 }

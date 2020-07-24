@@ -20,6 +20,7 @@ export interface SchemaInputValues {
 export interface SchemaField {
   name: string
   description?: string
+  argsMap: Map<string, SchemaInputValue>
   args: SchemaInputValues
   argList: string[]
   type: SchemaTypeRef
@@ -44,14 +45,24 @@ export interface SchemaFullType {
   kind: 'OBJECT'|'SCALAR'|'ENUM'|'INPUT_OBJECT'|'INTERFACE'
   name: string
   description?: string
+
+  fieldsMap: Map<string, SchemaField>
   fields: SchemaFields
   fieldList: string[]
+
+  inputFieldsMap: Map<string, SchemaInputValue>
   inputFields: SchemaInputValues
   inputFieldList: string[]
+
+  interfacesMap: Map<string, SchemaTypeRef>
   interfaces: SchemaTypeRefs
   interfaceList: string[]
+
+  enumValuesMap: Map<string, SchemaEnumValue>
   enumValues: SchemaEnumValues
   enumList: string[]
+
+  possibleTypesMap: Map<string, SchemaTypeRef>
   possibleTypes: SchemaTypeRefs
   possibleTypeList: string[]
 }
@@ -63,6 +74,8 @@ export interface SchemaDirective {
   name: string
   description?: string
   locations: string[]
+
+  argsMap: Map<string, SchemaInputValue>
   args: SchemaInputValues
   argList: string[]
 }
@@ -74,8 +87,12 @@ export interface ApiSchema {
   queryTypeName: string
   mutationTypeName: string
   subscriptionTypeName: string
+
+  typesMap: Map<string, SchemaFullType>
   types: SchemaFullTypes
   typeList: string[]
+
+  directivesMap: Map<string, SchemaDirective>
   directives: SchemaDirectives
   directiveList: string[]
 }

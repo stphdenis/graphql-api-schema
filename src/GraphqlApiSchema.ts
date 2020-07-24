@@ -9,7 +9,7 @@ import { IQuery } from './lib/IQuery'
 import { ISchema } from './lib/ISchema'
 import { getFullTypes } from './lib/getFullTypes'
 import { getDirectives } from './lib/getDirectives'
-import { refTypesToRef } from './lib/objectToRef'
+import { refTypesToRef } from './lib/TypesToRef'
 
 import { ApiSchema } from './ApiSchema'
 
@@ -126,7 +126,7 @@ export class GraphQLApiSchema {
     }
     const iSchema: ISchema = iSchemaData.__schema
 
-    const apiSchema = this._apiSchema ?? GraphQLApiSchema._apiSchema
+    const apiSchema = this.apiSchema
 
     apiSchema.queryTypeName = iSchema.queryType?.name ?? 'Query'
     apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
@@ -134,11 +134,13 @@ export class GraphQLApiSchema {
 
     const types = getFullTypes(iSchema.types)
     apiSchema.types = types.types
-    apiSchema.typeList = types.typeList
+    apiSchema.typeList = [...types.typesMap.keys()]
+    apiSchema.typesMap = types.typesMap
 
     const directives = getDirectives(iSchema.directives)
-    apiSchema.directives = directives.directives ?? {}
-    apiSchema.directiveList = directives.directiveList ?? []
+    apiSchema.directives = directives.directives
+    apiSchema.directiveList = [...directives.directivesMap.keys()]
+    apiSchema.directivesMap = directives.directivesMap
 
     refTypesToRef(apiSchema)
 
