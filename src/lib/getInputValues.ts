@@ -7,7 +7,7 @@ export function getInputValues(types: GraphQLInputValue[]|null):
   inputValuesMap: Map<string, SchemaInputValue>,
 } {
   const schemas: SchemaInputValues = {}
-  const schemasMap: Map<string, SchemaInputValue> = new Map()
+  const schemasMap = new Map<string, SchemaInputValue>()
   if(types && types.length > 0) {
     for(const type of types) {
       const schema = {} as SchemaInputValue
