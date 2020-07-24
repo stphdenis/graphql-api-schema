@@ -13,8 +13,8 @@
     "name": "DENIS Stéphane",
     "email": "stph.denis@gmail.com"
   },
-  "main": "dist/index",
-  "types": "dist/index.d.ts",
+  "main": "dist",
+  "types": "dist",
   "sideEffects": false,
   "homepage": "http://github.com/stphdenis/graphql-api-schema",
   "bugs": {
