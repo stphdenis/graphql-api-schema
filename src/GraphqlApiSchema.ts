@@ -162,7 +162,7 @@ export class GraphQLApiSchema {
     if(this._filePath) {
       try {
         this._jsonApiSchema = fs.readFileSync(this._filePath).toLocaleString()
-        const apiSchema = cycle.retrocycle(JSON.parse(this._jsonApiSchema))
+        const apiSchema = cycle.retrocycle(JSON.parse(this._jsonApiSchema, this.reviver))
         if(this._apiSchema) {
           Object.assign(this._apiSchema, apiSchema)
         } else {
@@ -192,6 +192,20 @@ export class GraphQLApiSchema {
   private jsonReplacer(key: string, value: any) {
     if(key && key === 'of') {
       return { $ref: `$[\"types\"][\"${value.name}\"]` }
+    }
+    if (value instanceof Map) {
+      return { $map: [...value] }
+    }
+    return value
+  }
+
+  /**
+   * Retreave Map
+   */
+  private reviver(key: string, value: any) {
+    if(key === '$map') {
+      console.info(`value['$map'] :`, value['$map'])
+      return new Map(value['$map'])
     }
     return value
   }
