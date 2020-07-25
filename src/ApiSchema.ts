@@ -52,6 +52,9 @@ export interface ApiSchema {
   mutationTypeName: string
   subscriptionTypeName: string
 
-  types: Map<string, SchemaFullType>
   directives: Map<string, SchemaDirective>
+  types: Map<string, SchemaFullType>
+  queries: Map<string, SchemaField>
+  mutations: Map<string, SchemaField>
+  subscriptions: Map<string, SchemaField>
 }
