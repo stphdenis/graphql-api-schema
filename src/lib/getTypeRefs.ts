@@ -1,24 +1,17 @@
+import { SchemaTypeRef } from '../ApiSchema'
+
 import { GraphQLTypeRef } from './ISchema'
 import { getTypeRef } from './getTypeRef'
 
-import { SchemaTypeRefs, SchemaTypeRef } from '../ApiSchema'
-
-export function getTypeRefs(types: GraphQLTypeRef[]|null):
-{ typeRefs: SchemaTypeRefs,
-  typeRefsMap: Map<string, SchemaTypeRef>,
-} {
-  const schemas: SchemaTypeRefs = {}
-  const schemasMap: Map<string, SchemaTypeRef> = new Map()
-  if(types && types.length > 0) {
-    for(const type of types) {
+export function getTypeRefs(typeRefs: GraphQLTypeRef[]|null)
+: Map<string, SchemaTypeRef>
+{
+  const schemas: Map<string, SchemaTypeRef> = new Map()
+  if(typeRefs && typeRefs.length > 0) {
+    for(const type of typeRefs) {
       const schema = getTypeRef(type)
-
-      schemas[schema.name] = schema.schema
-      schemasMap.set(schema.name, schema.schema)
+      schemas.set(schema.name, schema.typeRef)
     }
   }
-  return {
-    typeRefs: schemas,
-    typeRefsMap: schemasMap,
-  }
+  return schemas
 }

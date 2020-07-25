@@ -1,24 +1,30 @@
-import { SchemaFullTypes, SchemaFullType } from "../ApiSchema"
+import { SchemaFullType } from "../ApiSchema"
+
 import { GraphQLFullType } from "./ISchema"
-import { getFullType } from "./getFullType"
+import { getFields } from "./getFields"
+import { getInputValues } from "./getInputValues"
+import { getEnumValues } from "./getEnumValues"
+import { getTypeRefs } from "./getTypeRefs"
 
-export function getFullTypes(types: GraphQLFullType[]):
-{ types: SchemaFullTypes
-  typesMap: Map<string, SchemaFullType>,
-} {
-  const schemas: SchemaFullTypes = {}
-  const schemasMap: Map<string, SchemaFullType> = new Map()
-
-  for(const type of types) {
-    if(type.name.startsWith('__') === false) {
-      const schema = getFullType(type)
-
-      schemas[schema.name] = schema
-      schemasMap.set(schema.name, schema)
+export function getFullTypes(fullTypes: GraphQLFullType[])
+: Map<string, SchemaFullType>
+{
+  const schemas: Map<string, SchemaFullType> = new Map()
+  for(const fullType of fullTypes) {
+    if(fullType.name.startsWith('__') === false) {
+      const schema = {
+        kind: fullType.kind,
+        name: fullType.name,
+        description: fullType.description ?? undefined,
+      
+        fields: getFields(fullType.fields),
+        inputFields: getInputValues(fullType.inputFields),
+        interfaces: getTypeRefs(fullType.interfaces),
+        enumValues: getEnumValues(fullType.enumValues),
+        possibleTypes: getTypeRefs(fullType.possibleTypes),
+      }
+      schemas.set(schema.name, schema)
     }
   }
-  return {
-    types: schemas,
-    typesMap: schemasMap,
-  }
+  return schemas
 }

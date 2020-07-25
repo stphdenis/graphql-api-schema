@@ -1,26 +1,21 @@
-import { SchemaEnumValues, SchemaEnumValue } from "../ApiSchema"
+import { SchemaEnumValue } from "../ApiSchema"
+
 import { GraphQLEnumValue } from "./ISchema"
 
-export function getEnumValues(types: GraphQLEnumValue[]|null):
-{ enumValues: SchemaEnumValues,
-  enumValuesMap: Map<string, SchemaEnumValue>,
-} {
-  const schemas: SchemaEnumValues = {}
-  const schemasMap = new Map<string, SchemaEnumValue>()
-  if(types && types.length > 0) {
-    for(const type of types) {
-      const schema = {} as SchemaEnumValue
-      schema.name = type.name
-      schema.description = type.description ?? undefined
-      schema.isDeprecated = type.isDeprecated ?? false
-      schema.deprecationReason = type.deprecationReason ?? undefined
-      
-      schemas[schema.name] = schema
-      schemasMap.set(schema.name, schema)
+export function getEnumValues(enumValues: GraphQLEnumValue[]|null)
+: Map<string, SchemaEnumValue>
+{
+  const schemas = new Map<string, SchemaEnumValue>()
+  if(enumValues && enumValues.length > 0) {
+    for(const type of enumValues) {
+      const schema = {
+        name: type.name,
+        description: type.description ?? undefined,
+        isDeprecated: type.isDeprecated ?? false,
+        deprecationReason: type.deprecationReason ?? undefined,
+      }
+      schemas.set(schema.name, schema)
     }
   }
-  return {
-    enumValues: schemas,
-    enumValuesMap: schemasMap,
-  }
+  return schemas
 }

@@ -3,9 +3,6 @@ export interface SchemaTypeRef {
   isList: boolean
   of: SchemaFullType
 }
-export interface SchemaTypeRefs {
-  [key: string]: SchemaTypeRef
-}
 
 export interface SchemaInputValue {
   name: string
@@ -13,22 +10,14 @@ export interface SchemaInputValue {
   type: SchemaTypeRef
   defaultValue: any|null
 }
-export interface SchemaInputValues {
-  [key: string]: SchemaInputValue
-}
 
 export interface SchemaField {
   name: string
   description?: string
-  argsMap: Map<string, SchemaInputValue>
-  args: SchemaInputValues
-  argList: string[]
+  args: Map<string, SchemaInputValue>
   type: SchemaTypeRef
   isDeprecated: boolean
   deprecationReason?: string
-}
-export interface SchemaFields {
-  [key: string]: SchemaField
 }
 
 export interface SchemaEnumValue {
@@ -37,37 +26,17 @@ export interface SchemaEnumValue {
   isDeprecated: boolean
   deprecationReason?: string
 }
-export interface SchemaEnumValues {
-  [key: string]: SchemaEnumValue
-}
 
 export interface SchemaFullType {
   kind: 'OBJECT'|'SCALAR'|'ENUM'|'INPUT_OBJECT'|'INTERFACE'
   name: string
   description?: string
 
-  fieldsMap: Map<string, SchemaField>
-  fields: SchemaFields
-  fieldList: string[]
-
-  inputFieldsMap: Map<string, SchemaInputValue>
-  inputFields: SchemaInputValues
-  inputFieldList: string[]
-
-  interfacesMap: Map<string, SchemaTypeRef>
-  interfaces: SchemaTypeRefs
-  interfaceList: string[]
-
-  enumValuesMap: Map<string, SchemaEnumValue>
-  enumValues: SchemaEnumValues
-  enumList: string[]
-
-  possibleTypesMap: Map<string, SchemaTypeRef>
-  possibleTypes: SchemaTypeRefs
-  possibleTypeList: string[]
-}
-export interface SchemaFullTypes {
-  [key: string]: SchemaFullType
+  fields: Map<string, SchemaField>
+  inputFields: Map<string, SchemaInputValue>
+  interfaces: Map<string, SchemaTypeRef>
+  enumValues: Map<string, SchemaEnumValue>
+  possibleTypes: Map<string, SchemaTypeRef>
 }
 
 export interface SchemaDirective {
@@ -75,12 +44,7 @@ export interface SchemaDirective {
   description?: string
   locations: string[]
 
-  argsMap: Map<string, SchemaInputValue>
-  args: SchemaInputValues
-  argList: string[]
-}
-export interface SchemaDirectives {
-  [key: string]: SchemaDirective
+  args: Map<string, SchemaInputValue>
 }
 
 export interface ApiSchema {
@@ -88,11 +52,6 @@ export interface ApiSchema {
   mutationTypeName: string
   subscriptionTypeName: string
 
-  typesMap: Map<string, SchemaFullType>
-  types: SchemaFullTypes
-  typeList: string[]
-
-  directivesMap: Map<string, SchemaDirective>
-  directives: SchemaDirectives
-  directiveList: string[]
+  types: Map<string, SchemaFullType>
+  directives: Map<string, SchemaDirective>
 }

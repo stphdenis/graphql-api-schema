@@ -9,7 +9,7 @@ import { IQuery } from './lib/IQuery'
 import { ISchema } from './lib/ISchema'
 import { getFullTypes } from './lib/getFullTypes'
 import { getDirectives } from './lib/getDirectives'
-import { refTypesToRef } from './lib/TypesToRef'
+import { TypesToRef } from './lib/TypesToRef'
 
 import { ApiSchema } from './ApiSchema'
 
@@ -132,17 +132,10 @@ export class GraphQLApiSchema {
     apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
     apiSchema.subscriptionTypeName = iSchema.subscriptionType?.name ?? 'Subscription'
 
-    const types = getFullTypes(iSchema.types)
-    apiSchema.types = types.types
-    apiSchema.typeList = [...types.typesMap.keys()]
-    apiSchema.typesMap = types.typesMap
+    apiSchema.types = getFullTypes(iSchema.types)
+    apiSchema.directives = getDirectives(iSchema.directives)
 
-    const directives = getDirectives(iSchema.directives)
-    apiSchema.directives = directives.directives
-    apiSchema.directiveList = [...directives.directivesMap.keys()]
-    apiSchema.directivesMap = directives.directivesMap
-
-    refTypesToRef(apiSchema)
+    TypesToRef.ref(apiSchema)
 
     const jsonApiSchema = JSON.stringify(apiSchema, this.jsonReplacer, this._jsonSpace)
     if(jsonApiSchema !== this._jsonApiSchema) {

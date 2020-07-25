@@ -14,13 +14,13 @@ With the static form :
 import { apiSchema } from 'graphql-api-schema'
 
 // List of directives
-apiSchema.directiveList // => [ 'include', 'skip', 'deprecated' ]
+apiSchema.directives.keys[] // => [ 'include', 'skip', 'deprecated' ]
 
 // Args of directive 'skip'
-apiSchema.directives['skip'].argList // => [ 'if' ]
+apiSchema.directives['skip'].args.keys() // => [ 'if' ]
 ```
 
-`apiSchema.directives['skip'].args['if']` gives :
+`apiSchema.directives.get('skip').args.get('if')` gives :
 
 ```js
  {
