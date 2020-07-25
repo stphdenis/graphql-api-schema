@@ -11,7 +11,7 @@ import { getFullTypes } from './lib/getFullTypes'
 import { getDirectives } from './lib/getDirectives'
 import { TypesToRef } from './lib/TypesToRef'
 
-import { ApiSchema } from './ApiSchema'
+import { ApiSchema, SchemaField } from './ApiSchema'
 
 /**
  * Options for GraphQLApiSchema constructor's class.
@@ -132,8 +132,11 @@ export class GraphQLApiSchema {
     apiSchema.mutationTypeName = iSchema.mutationType?.name ?? 'Mutation'
     apiSchema.subscriptionTypeName = iSchema.subscriptionType?.name ?? 'Subscription'
 
-    apiSchema.types = getFullTypes(iSchema.types)
     apiSchema.directives = getDirectives(iSchema.directives)
+    apiSchema.types = getFullTypes(iSchema.types)
+    apiSchema.queries = apiSchema.types.get(apiSchema.queryTypeName)?.fields as Map<string, SchemaField>
+    apiSchema.mutations = apiSchema.types.get(apiSchema.mutationTypeName)?.fields as Map<string, SchemaField>
+    apiSchema.subscriptions = apiSchema.types.get(apiSchema.subscriptionTypeName)?.fields as Map<string, SchemaField>
 
     TypesToRef.ref(apiSchema)
 
@@ -197,14 +200,13 @@ export class GraphQLApiSchema {
    * Retreave Map
    */
   private reviver(key: string, value: any) {
-    if(value['$map']) {
-      //console.info(`value['$map'] :`, value['$map'])
-      return new Map(value['$map'])
+    if (key && value &&
+      typeof value === 'object' &&
+      value instanceof Array === false &&
+      value['$map']
+    ) {
+      return new Map(value['$map']);
     }
-    /*if(key.endsWith('Map')) {
-      //console.info(`value['$map'] :`, value['$map'])
-      return new Map(value)
-    }*/
     return value
   }
 }
