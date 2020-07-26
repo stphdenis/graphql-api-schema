@@ -12,6 +12,7 @@ import { getDirectives } from './lib/getDirectives'
 import { TypesToRef } from './lib/TypesToRef'
 
 import { ApiSchema, SchemaField } from './ApiSchema'
+import { Json } from './JSON'
 
 /**
  * Options for GraphQLApiSchema constructor's class.
@@ -140,7 +141,7 @@ export class GraphQLApiSchema {
 
     TypesToRef.ref(apiSchema)
 
-    const jsonApiSchema = JSON.stringify(apiSchema, this.jsonReplacer, this._jsonSpace)
+    const jsonApiSchema = Json.stringify(apiSchema, null, this._jsonSpace)
     if(jsonApiSchema !== this._jsonApiSchema) {
       this._jsonApiSchema = jsonApiSchema
       this.writeFile()
@@ -158,7 +159,7 @@ export class GraphQLApiSchema {
     if(this._filePath) {
       try {
         this._jsonApiSchema = fs.readFileSync(this._filePath).toLocaleString()
-        const apiSchema = cycle.retrocycle(JSON.parse(this._jsonApiSchema, this.reviver))
+        const apiSchema = Json.parse(this._jsonApiSchema)
         if(this._apiSchema) {
           Object.assign(this._apiSchema, apiSchema)
         } else {
@@ -182,32 +183,5 @@ export class GraphQLApiSchema {
     }
   }
 
-  /**
-   * Eliminate recursion referencing the types
-   */
-  private jsonReplacer(key: string, value: any) {
-    if(key && key === 'of') {
-      return { $ref: `$[\"types\"][\"${value.name}\"]` }
-    }
-    if (value instanceof Map) {
-      return { $map: [...value] }
-      //return [...value]
-    }
-    return value
-  }
-
-  /**
-   * Retreave Map
-   */
-  private reviver(key: string, value: any) {
-    if (key && value &&
-      typeof value === 'object' &&
-      value instanceof Array === false &&
-      value['$map']
-    ) {
-      return new Map(value['$map']);
-    }
-    return value
-  }
 }
 export const apiSchema = GraphQLApiSchema.apiSchema
