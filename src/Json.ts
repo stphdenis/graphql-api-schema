@@ -139,8 +139,7 @@ export class Json {
   constructor(options?: JsonOptions) {
     this.#options = defaultJsonOptions
     if (options) {
-      Object.assign(this.#options.parse, options.parse)
-      Object.assign(this.#options.stringify, options.stringify)
+      this.setOptions(options)
     }
   }
 
@@ -153,7 +152,7 @@ export class Json {
     return JSON.stringify(value, this.replacer(replacer), space)
   }
 
-  replacer(replace?: Replacer|null): (this: any, key: string, value: any) => any {
+  private replacer(replace?: Replacer|null): (this: any, key: string, value: any) => any {
     const that = this
     /**
      * Eliminate recursion referencing the types
@@ -201,7 +200,7 @@ export class Json {
     return cycle.retrocycle(JSON.parse(text, this.reviver(reviver)))
   }
 
-  reviver(revive?: Reviver): Reviver {
+  private reviver(revive?: Reviver): Reviver {
     const that = this
     function reviver(this: any, key: string, value: any) {
       if (key && value &&
