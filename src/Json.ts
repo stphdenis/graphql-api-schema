@@ -11,7 +11,14 @@ export interface JsonOptions {
      * 
      * Can't be '$set' if mapSchema === '$set'
      */
-    setKeys: string[]|null
+    setStringKeys: string[]|null
+    /**
+     * Keys to consider a value as a Set.
+     * Ex: /^\w*Set|\w*-set$/ => '*Set' et '*-set'
+     * 
+     * Can't be '$set' if mapSchema === '$set'
+     */
+    setRegexKeys: RegExp|null,
 
     /** Interprete { "anyKey": { "$map": [...] } } as a map */
     mapSchema: '$map'|false
@@ -20,16 +27,34 @@ export interface JsonOptions {
      * 
      * Can't be '$map' if mapSchema === '$map'
      */
-    mapKeys: string[]|null
+    mapStringKeys: string[]|null
+    /**
+     * Keys to consider a value as a Map.
+     * Ex: /^\w*Map|\w*-map$/ => '*Map' et '*-map'
+     * 
+     * Can't be '$map' if mapSchema === '$map'
+     */
+    mapRegexKeys: RegExp|null,
 
-    /** Interprete { "anyKey": { "$date": "..." } } as a date */
-    dateSchema: '$date'|false
+    /**
+     * '$Date' => { "anyKey": { "$date": "..." } }
+     * 'JSON&UTC' => { "anyKey": "2020-07-27T09:49:00.947Z" }
+     * 'JSON&UTC' => { "anyKey": "Mon, 27 Jul 2020 09:50:51 GMT" }
+     */
+    dateSchema: ('$date'|'JSON&UTC')[]
     /**
      * Keys to consider a value as a Date.
      * 
      * Can't be '$date' if dateSchema === '$date'
      */
-    dateKeys: string[]|null
+    dateStringKeys: string[]|null
+    /**
+     * Keys to consider a value as a Date.
+     * Ex: /^\w*Date|\w*-date$/ => '*Date' et '*-date'
+     * 
+     * Can't be '$date' if dateSchema === '$date'
+     */
+    dateRegexKeys: RegExp|null,
     /** Date convertion */
     dateType: "String"|"Date"
   }
@@ -44,15 +69,18 @@ export interface JsonOptions {
 
 const defaultJsonOptions: JsonOptions = {
   parse: {
-    dateSchema: false,
-    dateKeys: null,
+    dateSchema: ['$date', 'JSON&UTC'],
+    dateStringKeys: null,
+    dateRegexKeys: null,
     dateType: "Date",
     
     setSchema: '$set',
-    setKeys: null,
+    setStringKeys: null,
+    setRegexKeys: null,
     
     mapSchema: '$map',
-    mapKeys: null,
+    mapStringKeys: null,
+    mapRegexKeys: null,
   },
   stringify: {
     dateSchema: false,
@@ -161,44 +189,34 @@ export class Json {
     ) {
       const options = this.#options.parse
       if (options.setSchema === '$set' && value['$set']) return new Set(value['$set'])
-      if (options.setKeys?.includes(key)) return new Set(value)
+      if (options.setStringKeys?.includes(key)) return new Set(value)
+      if (options.setRegexKeys?.test(key)) return new Set(value)
 
       if (options.mapSchema === '$map' && value['$map']) return new Map(value['$map'])
-      if (options.mapKeys?.includes(key)) return new Map(value)
-
-      if (options.dateSchema === '$date' && value['$date']) {
-        if (options.dateType === 'Date') {
-          return new Date(value['$date'])
-        } else {
-          return value['$date']
-        }
-      }
-      if (options.dateKeys?.includes(key)) {
-        if (options.dateType === 'Date') {
-          return new Date(value)
-        } else {
-          return value
-        }
-      }
-
+      if (options.mapStringKeys?.includes(key)) return new Map(value)
+      if (options.mapRegexKeys?.test(key)) return new Map(value)
 
       if (options.dateType === 'Date') {
-        if (options.dateSchema === '$date' && value['$date']) {
+        if (options.dateSchema.includes('$date') && value['$date']) {
           return new Date(value['$date'])
         }
-        if (options.dateKeys?.includes(key)) {
+        if (options.dateStringKeys?.includes(key)) {
           return new Date(value)
         }
-        if (/^\d{2}-\d{2}-\d{4}$/.test(value)) {// TODO: A terminer !!!!!!
+        if (options.dateRegexKeys?.test(key)) {
+          return new Date(value)
+        }
+        // YYYY-MM-DDTHH:mm:ss.sssZ | Ddd, JJ Mmm YYYY HH:mm:ss GMT
+        if (options.dateSchema.includes('JSON&UTC') &&
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$|^[A-Z][a-z]{2}, \d{2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}:\d{2} GMT$/.test(value)
+        ) {
           return new Date(value)
         }
       } else {
-        if (options.dateSchema === '$date' && value['$date']) {
+        if (options.dateSchema.includes('$date') && value['$date']) {
           return value['$date']
         }
-        return value
       }
-
     }
     return value
   }
