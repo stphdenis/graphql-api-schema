@@ -141,7 +141,13 @@ export class GraphQLApiSchema {
 
     TypesToRef.ref(apiSchema)
 
-    const jsonApiSchema = Json.stringify(apiSchema, null, this._jsonSpace)
+    function replacer(this: any, key: string, value: any): any {
+      if(key && key === 'of') {
+        return { $ref: `$[\"types\"][\"${value.name}\"]` }
+      }
+    }
+
+    const jsonApiSchema = Json.stringify(apiSchema, replacer, this._jsonSpace)
     if(jsonApiSchema !== this._jsonApiSchema) {
       this._jsonApiSchema = jsonApiSchema
       this.writeFile()
