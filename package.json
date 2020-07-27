@@ -1,6 +1,6 @@
 {
   "name": "graphql-api-schema",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "Simpler schema object from GraphQLSchema",
   "keywords": [
     "GraphQL",
