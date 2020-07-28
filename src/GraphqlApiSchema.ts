@@ -144,6 +144,7 @@ export class GraphQLApiSchema {
       if(key && key === 'of') {
         return { $ref: `$[\"types\"][\"${value.name}\"]` }
       }
+      return value
     }
 
     const jsonApiSchema = Json.stringify(apiSchema, replacer, this._jsonSpace)
