@@ -19,6 +19,11 @@ iterall@^1.2.2:
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.3.0.tgz#afcb08492e2915cbd8a0884eb93a8c94d0d72fea"
   integrity sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
 
+json-map-cycle@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/json-map-cycle/-/json-map-cycle-0.2.0.tgz#83442425f4e97c5d291b42180f8defd4da445afc"
+  integrity sha512-Pv9YEr419/L40R44Uu8eUaluN/jUkczmw4tNEZkgcLSTnFSas9++43/54ZiNk73yrd8uGrtQK7IbR80upDHikg==
+
 typescript@^3.9.7:
   version "3.9.7"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
