@@ -34,7 +34,8 @@
   },
   "peerDependencies": {
     "cycle": "^1.0.3",
-    "graphql": ">=14.0.0"
+    "graphql": ">=14.0.0",
+    "json-map-cycle": ">=0.2.0"
   },
   "scripts": {
     "build": "yarn tsc",

@@ -1,7 +1,6 @@
 import * as process from 'process'
 import * as path from 'path'
 import * as fs from 'fs'
-import * as cycle from 'cycle'
 
 import { GraphQLSchema, graphqlSync } from 'graphql'
 
@@ -12,7 +11,7 @@ import { getDirectives } from './lib/getDirectives'
 import { TypesToRef } from './lib/TypesToRef'
 
 import { ApiSchema, SchemaField } from './ApiSchema'
-import { Json } from './JSON'
+import Json from 'json-map-cycle'
 
 /**
  * Options for GraphQLApiSchema constructor's class.
