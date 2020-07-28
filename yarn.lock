@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.23.tgz#676fa0883450ed9da0bb24156213636290892806"
   integrity sha512-Z4U8yDAl5TFkmYsZdFPdjeMa57NOvnaf1tljHzhouaPEp7LCj2JKkejpI1ODviIAQuW4CcQmxkQ77rnLsOOoKw==
 
+cycle@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
+  integrity sha1-IegLK+hYD5i0aPN5QwZisEbDStI=
+
 graphql@14.5.8:
   version "14.5.8"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.5.8.tgz#504f3d3114cb9a0a3f359bbbcf38d9e5bf6a6b3c"
@@ -19,10 +24,10 @@ iterall@^1.2.2:
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.3.0.tgz#afcb08492e2915cbd8a0884eb93a8c94d0d72fea"
   integrity sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
 
-json-map-cycle@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/json-map-cycle/-/json-map-cycle-0.2.0.tgz#83442425f4e97c5d291b42180f8defd4da445afc"
-  integrity sha512-Pv9YEr419/L40R44Uu8eUaluN/jUkczmw4tNEZkgcLSTnFSas9++43/54ZiNk73yrd8uGrtQK7IbR80upDHikg==
+json-map-cycle@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/json-map-cycle/-/json-map-cycle-0.2.1.tgz#f29fdf448284fd4cae05e55874d94d3f27770ffe"
+  integrity sha512-P8+qwN4p4G1E7ZqhBroUgFu6reaG0e6HyZGASQRgaDrtisr2VjEJzenQpbi+S0UKEk8peBBcpnyLzJUrrirViw==
 
 typescript@^3.9.7:
   version "3.9.7"
