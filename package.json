@@ -13,17 +13,17 @@
     "name": "DENIS Stéphane",
     "email": "stph.denis@gmail.com"
   },
-  "main": "dist",
-  "types": "dist",
-  "sideEffects": false,
   "homepage": "http://github.com/stphdenis/graphql-api-schema",
-  "bugs": {
-    "url": "http://github.com/stphdenis/graphql-api-schema/issues"
-  },
   "repository": {
     "type": "git",
     "url": "http://github.com/stphdenis/graphql-api-schema.git"
   },
+  "bugs": {
+    "url": "http://github.com/stphdenis/graphql-api-schema/issues"
+  },
+  "main": "dist",
+  "types": "dist",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -36,7 +36,7 @@
   },
   "peerDependencies": {
     "graphql": ">=14.0.0",
-    "json-map-cycle": ">=0.2.1"
+    "json-map-cycle": ">=0.2.2"
   },
   "scripts": {
     "build": "yarn tsc",
