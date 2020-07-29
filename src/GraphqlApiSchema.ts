@@ -65,9 +65,9 @@ Json.setOptions({
     retrocycle: true,
   },
   stringify: {
-    decycle: false,
+    decycle: false, // Done by our own replacer
     dateSchema: false,
-    setSchema: 'array',
+    setSchema: false,
     mapSchema: '$map'
   }
 })
