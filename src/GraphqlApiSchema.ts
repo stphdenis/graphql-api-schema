@@ -23,15 +23,15 @@ export interface GraphQLApiSchemaOptions {
   graphqlSchema?: GraphQLSchema
   /**
    * Based on project root.
-   * 
+   *
    * Mandatory if `fileName` is defined.
    */
   dirName?: string
   /**
    * Write a JSON file each time `apiSchema` is modified.
-   * 
+   *
    * Hydrate `apiSchema` at initialisation time if `graphQLSchema` is undefined.
-   * 
+   *
    * Mandatory if `dirName` is defined.
    */
   fileName?: string
@@ -43,8 +43,19 @@ interface PrivateOptions extends GraphQLApiSchemaOptions {
   isStatic: boolean
 }
 
+const emptyApiSchema: ApiSchema = {
+  queryTypeName: '',
+  mutationTypeName: '',
+  subscriptionTypeName: '',
+  directives: new Map(),
+  types: new Map(),
+  queries: new Map(),
+  mutations: new Map(),
+  subscriptions: new Map(),
+}
+
 export class GraphQLApiSchema {
-  private static _apiSchema: ApiSchema = {} as ApiSchema
+  private static _apiSchema: ApiSchema = { ...emptyApiSchema }
 
   private static graphqlApiSchema: GraphQLApiSchema
 
@@ -86,7 +97,7 @@ export class GraphQLApiSchema {
     throw new Error('apiSchema allready defined')
   }
 
-  private _apiSchema?: ApiSchema
+  private _apiSchema!: ApiSchema
   private _jsonApiSchema: string
   private _jsonSpace?: number
   private _fileName?: string
@@ -101,7 +112,7 @@ export class GraphQLApiSchema {
       throw new Error('Both "dirName" and "fileName have to be defined or not')
     }
     if((options as PrivateOptions).isStatic === false) {
-      this._apiSchema = {} as ApiSchema
+      this._apiSchema = { ...emptyApiSchema }
     }
     this._jsonApiSchema = '{}'
 
