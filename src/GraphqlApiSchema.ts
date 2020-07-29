@@ -12,6 +12,7 @@ import { TypesToRef } from './lib/TypesToRef'
 
 import { ApiSchema, SchemaField } from './ApiSchema'
 import Json from 'json-map-cycle'
+import { isNullOrUndefined } from 'util'
 
 /**
  * Options for GraphQLApiSchema constructor's class.
@@ -53,6 +54,23 @@ const emptyApiSchema: ApiSchema = {
   mutations: new Map(),
   subscriptions: new Map(),
 }
+
+Json.setOptions({
+  parse: {
+    setSchema: false,
+    mapSchema: '$map',
+    dateType: 'String',
+    dateSchema: null,
+    removeComments: false,
+    retrocycle: true,
+  },
+  stringify: {
+    decycle: false,
+    dateSchema: false,
+    setSchema: 'array',
+    mapSchema: '$map'
+  }
+})
 
 export class GraphQLApiSchema {
   private static _apiSchema: ApiSchema = { ...emptyApiSchema }
